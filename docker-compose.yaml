@@ -1,7 +1,8 @@
 services:
   ollama:
     volumes:
-      - ollama:/home/ubuntu/ollama-data/
+      - .:/code
+      - ./ollama/ollama:/home/ubuntu/ollama-data
     ports:
       - 11434:11434
     container_name: ollama
@@ -16,7 +17,7 @@ services:
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
     volumes:
-      - open-webui:/home/ubuntu/open-webui-data/data
+      - ./ollama/ollama-webui:/home/ubuntu/open-webui-data/data
     depends_on:
       - ollama
     ports:
@@ -25,6 +26,3 @@ services:
       - 'OLLAMA_BASE_URL=http://localhost:11434'
     restart: unless-stopped
 
-volumes:
-  ollama: {}
-  open-webui: {}
